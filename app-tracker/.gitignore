@@ -1,0 +1,5 @@
+.vscode/*
+__pycache__/*
+serviceAccount.json
+firebase_config.py
+firebase_firestore.py
