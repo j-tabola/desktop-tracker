@@ -1,8 +1,10 @@
-from firebase_firestore import db
+from firebase_firestore import get_db
 from datetime import datetime
 import json
 import keyring
 import os
+
+db = get_db()
 
 def create_user_document(user_id, email):
     user_ref = db.collection("Users").document(user_id)

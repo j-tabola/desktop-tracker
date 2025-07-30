@@ -1,5 +1,7 @@
-from firebase_firestore import db
+from firebase_firestore import get_db
 from datetime import datetime
+
+db = get_db()
 
 def get_links(user_id):
     ref = db.collection("Users").document(user_id).collection("links")

@@ -1,5 +1,9 @@
 .vscode/*
 __pycache__/*
+build/*
+dist/*
+
 serviceAccount.json
 firebase_config.py
 firebase_firestore.py
+main.spec
