@@ -7,3 +7,5 @@ serviceAccount.json
 firebase_config.py
 firebase_firestore.py
 main.spec
+
+icon.ico

@@ -104,6 +104,7 @@ class DashboardApp:
 
     def remove_link(self, key):
         delete_link(self.user_id, key)
+        self.remove_checkbox_state(key)
         self.load_links()
     
     def logout(self):
@@ -156,7 +157,17 @@ class DashboardApp:
             self.reset_checkboxes()
             return {}
 
-        return data.get("states", {})
+        valid_link_ids = set(str(link_id) for link_id, _ in get_links(self.user_id))
+        current_states = data.get("states", {})
+        cleaned_states = {k: v for k, v in current_states.items() if k in valid_link_ids}
+
+        if cleaned_states != current_states:
+            
+            data["states"] = cleaned_states
+            with open(file_path, "w") as f:
+                json.dump(data, f)
+
+        return cleaned_states
 
     def save_checkbox_state(self, link_id, var):
         file_path = self.get_checkbox_file_path()
@@ -189,3 +200,18 @@ class DashboardApp:
         for link_id, var in self.check_vars.items():
             var.set(new_state)
             self.save_checkbox_state(link_id, var)
+
+    def remove_checkbox_state(self, link_id):
+        file_path = self.get_checkbox_file_path()
+
+        if not os.path.exists(file_path):
+            return
+
+        with open(file_path, "r") as f:
+            data = json.load(f)
+
+        if "states" in data and str(link_id) in data["states"]:
+            del data["states"][str(link_id)]
+
+            with open(file_path, "w") as f:
+                json.dump(data, f)
